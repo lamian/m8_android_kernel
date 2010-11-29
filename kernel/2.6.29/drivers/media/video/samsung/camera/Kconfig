@@ -1,0 +1,12 @@
+config VIDEO_CAM
+	bool "S3C6410 CAMERA support"
+	depends on VIDEO_SAMSUNG
+	default n
+	select VIDEO_SAMSUNG_S5K4BA
+
+config VIDEO_SAMSUNG_S5K4BA
+	bool
+	depends on VIDEO_CAM
+	default y
+	---help---
+	  TBA

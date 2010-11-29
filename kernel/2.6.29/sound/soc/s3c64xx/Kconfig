@@ -1,0 +1,232 @@
+menu "SoC Audio for the Samsung S3C"
+	depends on ARCH_S3C64XX || ARCH_S5P64XX
+
+config SND_S3C64XX_SOC
+	tristate "SoC Audio for the Samsung S3C chips"
+	depends on ARCH_S3C64XX
+	default y
+	select SND_PCM
+	help
+	  Say Y or M if you want to add support for codecs attached to
+	  the S3C AC97, I2S or SSP interface. You will also need
+	  to select the audio interfaces to support below.
+
+config SND_S5P64XX_SOC
+	tristate "SoC Audio for the Samsung S5P chips"
+	depends on ARCH_S5P64XX
+	select SND_PCM
+	help
+	  Say Y or M if you want to add support for codecs attached to
+	  the S3C AC97, I2S or SSP interface. You will also need
+	  to select the audio interfaces to support below.
+
+choice
+       prompt "S3C64XX I2S BUS Select"
+	depends on SND_S3C64XX_SOC
+
+config SND_S3C64XX_I2S_BUS0
+	bool "Audio Codec at I2S bus0(GPDx)"
+	depends on SND_S3C64XX_SOC
+	help
+	  Say Y here to make I2S bus0 as audio codec bus port.
+
+config SND_S3C64XX_I2S_BUS1
+	bool "Audio Codec at I2S bus1(GPEx)"
+	depends on SND_S3C64XX_SOC
+	help
+	  Say Y here to make I2S bus1 as audio codec bus port.
+endchoice
+
+config SND_S3C_I2S_V32
+	tristate
+
+config SND_S3C_I2S_V40
+	tristate
+
+config SND_S3C_I2S_V50
+	tristate
+
+config SND_S3C_AC97
+	tristate
+
+config SND_S3C64XX_SOC_SMDK6410_WM9713
+	tristate "SoC AC97 Audio support for SMDK6410 - WM9713"
+	depends on SND_S3C64XX_SOC && (MACH_SMDK6410)
+	select SND_S3C_AC97
+	select SND_SOC_WM9713
+	help
+	  Say Y if you want to add support for SoC audio on smdk6410
+	  with the WM9713.
+
+choice
+        prompt "SMDK Record Path Select"
+	depends on SND_S3C64XX_SOC_SMDK6400_WM9713 || SND_S3C64XX_SOC_SMDK6410_WM9713
+
+config SOUND_WM9713_INPUT_STREAM_LINE
+	bool "Input Stream is LINE-IN"
+	depends on SND_S3C64XX_SOC_SMDK6400_WM9713 || SND_S3C64XX_SOC_SMDK6410_WM9713
+	help
+	  Say Y here to make input stream as LINE-IN.
+
+config SOUND_WM9713_INPUT_STREAM_MIC
+	bool "Input Stream is MIC"
+	depends on SND_S3C64XX_SOC_SMDK6400_WM9713 || SND_S3C64XX_SOC_SMDK6410_WM9713
+	help
+	  Say Y here to make input stream as MIC.
+endchoice
+
+
+config SND_S3C64XX_SOC_SMDK6410_WM8580
+	tristate "SoC I2S Audio support for SMDK6410 - WM8580"
+	depends on SND_S3C64XX_SOC && (MACH_SMDK6410 || MACH_SMDK6430)
+	default y
+	select SND_S3C_I2S_V40
+	select SND_SOC_WM8580
+	help
+	  Say Y if you want to add support for SoC audio on smdk6410
+	  with the WM8580.
+
+choice
+        prompt "SMDK Record Path Select"
+	depends on SND_S3C64XX_SOC_SMDK6410_WM8580 || SND_S3C24XX_SOC_SMDK2450_WM8580
+
+config SOUND_WM8580_INPUT_STREAM_LINE
+	bool "Input Stream is LINE-IN"
+	depends on SND_S3C64XX_SOC_SMDK6410_WM8580 || SND_S3C24XX_SOC_SMDK2450_WM8580
+	help
+	  Say Y here to make input stream as LINE-IN.
+
+config SOUND_WM8580_INPUT_STREAM_MIC
+	bool "Input Stream is MIC"
+	depends on SND_S3C64XX_SOC_SMDK6410_WM8580 || SND_S3C24XX_SOC_SMDK2450_WM8580
+	help
+	  Say Y here to make input stream as MIC.
+endchoice
+
+config SND_S5P64XX_SOC_SMDK6440_WM8580
+	tristate "SoC I2S Audio support for SMDK6440 - WM8580"
+	depends on SND_S5P64XX_SOC && MACH_SMDK6440
+	select SND_S3C_I2S_V40
+	select SND_SOC_WM8580
+	help
+	  Say Y if you want to add support for SoC audio on smdk6440
+	  with the WM8580.
+
+choice
+        prompt "SMDK Record Path Select"
+	depends on SND_S5P64XX_SOC_SMDK6440_WM8580
+
+config SOUND_SMDK6440_WM8580_INPUT_STREAM_LINE
+	bool "Input Stream is LINE-IN"
+	depends on SND_S5P64XX_SOC_SMDK6440_WM8580
+	help
+	  Say Y here to make input stream as LINE-IN.
+
+config SOUND_SMDK6440_WM8580_INPUT_STREAM_MIC
+	bool "Input Stream is MIC"
+	depends on SND_S5P64XX_SOC_SMDK6440_WM8580
+	help
+	  Say Y here to make input stream as MIC.
+endchoice
+
+config SND_S3C64XX_SOC_SMDK6410_WM8753
+	tristate "SoC I2S Audio support for SMDK6410 - WM8753"
+	depends on SND_S3C64XX_SOC && (MACH_SMDK6410 || MACH_SMDK6430)
+	select SND_S3C_I2S_V32
+	select SND_SOC_WM8753
+	default y
+	help
+	  Say Y if you want to add support for SoC audio on smdk6410
+	  with the WM8753.
+
+choice
+        prompt "WM8753 Clock Mode Select"
+	depends on SND_S3C64XX_SOC_SMDK6410_WM8753
+
+config SND_S3C64XX_SOC_SMDK6410_WM8753_MASTER
+	bool "Audio Codec WM8753 in Master Mode"
+	depends on SND_S3C64XX_SOC_SMDK6410_WM8753
+	help
+	  Say Y here to make wm8753 as master mode.
+
+config SND_S3C64XX_SOC_SMDK6410_WM8753_SLAVE
+	bool "Audio Codec WM8753 in Slave Mode"
+	depends on SND_S3C64XX_SOC_SMDK6410_WM8753
+	help
+	  Say Y here to make wm8753 as slave mode.
+endchoice
+	
+config SND_S3C64XX_SOC_SMDK6410_WM8990
+	tristate "SoC I2S Audio support for SMDK6410 - WM8990"
+	depends on SND_S3C64XX_SOC && (MACH_SMDK6410)
+	select SND_S3C_I2S_V32
+	select SND_SOC_WM8990
+	help
+	  Say Y if you want to add support for SoC audio on smdk6410
+	  with the WM8990.
+
+choice
+        prompt "SMDK Record Path Select"
+	depends on SND_S3C64XX_SOC_SMDK6410_WM8990 || SND_S3C64XX_SOC_SMDK6400_WM8990
+
+config SOUND_WM8990_INPUT_STREAM_LINE_IN
+	bool "Input Stream is LINE-IN"
+	depends on SND_S3C64XX_SOC_SMDK6410_WM8990 || SND_S3C64XX_SOC_SMDK6400_WM8990
+	help
+	  Say Y here to make input stream as LINE-IN.
+
+config SOUND_WM8990_INPUT_STREAM_MIC_IN
+	bool "Input Stream is MIC"
+	depends on SND_S3C64XX_SOC_SMDK6410_WM8990 || SND_S3C64XX_SOC_SMDK6400_WM8990
+	help
+	  Say Y here to make input stream as MIC.
+endchoice
+
+
+config SND_S3C64XX_SOC_SMDK6410_WM8993
+	tristate "SoC I2S Audio support for SMDK6410 - WM8993"
+	depends on SND_S3C64XX_SOC && (MACH_SMDK6410)
+	select SND_S3C_I2S_V32
+	select SND_SOC_WM8993
+	help
+	  Say Y if you want to add support for SoC audio on smdk6410
+	  with the WM8993.
+
+choice
+        prompt "SMDK Record Path Select"
+	depends on SND_S3C64XX_SOC_SMDK6410_WM8993 || SND_S3C64XX_SOC_SMDK6400_WM8993
+
+config SOUND_WM8993_INPUT_STREAM_LINE_IN
+	bool "Input Stream is LINE-IN"
+	depends on SND_S3C64XX_SOC_SMDK6410_WM8993 || SND_S3C64XX_SOC_SMDK6400_WM8993
+	help
+	  Say Y here to make input stream as LINE-IN.
+
+config SOUND_WM8993_INPUT_STREAM_MIC_IN
+	bool "Input Stream is MIC"
+	depends on SND_S3C64XX_SOC_SMDK6410_WM8993 || SND_S3C64XX_SOC_SMDK6400_WM8993
+	help
+	  Say Y here to make input stream as MIC.
+endchoice
+
+
+config SND_S3C64XX_SOC_SMDK6410_S5M8751
+	tristate "SoC I2S Audio support for SMDK6410 - S5M8751"
+	depends on SND_S3C64XX_SOC && (MACH_SMDK6410)
+	select SND_S3C_I2S_V32
+	select SND_SOC_S5M8751
+	help
+	  Say Y if you want to add support for SoC audio on smdk6410
+	  with the S5M8751.
+
+config SND_S3C64XX_SOC_MEIZUM8_WM8753
+	tristate "SoC I2S Audio support for MEIZUM8 - WM8753"
+	depends on SND_S3C64XX_SOC && (MACH_SMDK6410 || MACH_SMDK6430)
+	default y
+	select SND_S3C_I2S_V32
+	select SND_SOC_WM8753
+	help
+	  Say Y if you want to add support for SoC audio on meizu m8 smartphone
+	  with the WM8753.
+
+endmenu

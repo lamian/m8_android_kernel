@@ -1,0 +1,28 @@
+#
+# Makefile for CMM device driver designed by Samsung Electronics 2007
+#
+
+config VIDEO_FIMC
+	bool "S3C6410 FIMC(Camera Interface) device support"
+	depends on VIDEO_SAMSUNG && VIDEO_CAPTURE_DRIVERS && VIDEO_V4L2
+	select VIDEO_FIXED_MINOR_RANGES
+	default n
+	---help---
+	  This is a video4linux driver for Samsung FIMC device.
+
+config VIDEO_FIMC_DEBUG
+	bool "FIMC driver debug messages"
+	depends on VIDEO_FIMC
+
+source "drivers/media/video/samsung/fimc/Kconfig-camera"
+
+config VIDEO_FIMC_CAM_CH
+	int "External Camera channel (0=A, 1=B)"
+	depends on VIDEO_FIMC
+	default "0"
+
+config VIDEO_FIMC_CAM_RESET
+	int "Reset Type (0=low, 1=high)"
+	depends on VIDEO_FIMC
+	default "0"
+

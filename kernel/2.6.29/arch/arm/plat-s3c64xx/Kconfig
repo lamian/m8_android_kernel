@@ -1,0 +1,129 @@
+# arch/arm/plat-s3c64xx/Kconfig
+#
+# Copyright 2008 Openmoko, Inc.
+# Copyright 2008 Simtec Electronics
+#	Ben Dooks <ben@simtec.co.uk>
+#
+# Licensed under GPLv2
+
+config PLAT_S3C64XX
+	bool
+	depends on ARCH_S3C64XX
+	select PLAT_S3C
+	select ARM_VIC
+	default y
+	select NO_IOPORT
+	select ARCH_REQUIRE_GPIOLIB
+	select S3C_GPIO_TRACK
+	select S3C_GPIO_PULL_UPDOWN
+	select S3C_GPIO_CFG_S3C24XX
+	select S3C_GPIO_CFG_S3C64XX
+	help
+	  Base platform code for any Samsung S3C64XX device
+
+if PLAT_S3C64XX
+
+# Configuration options shared by all S3C64XX implementations
+
+config CPU_S3C64XX_INIT
+	bool
+	help
+	  Common initialisation code for the S3C6400 that is shared
+	  by other CPUs in the series, such as the S3C6410.
+
+config CPU_S3C64XX_CLOCK
+	bool
+	help
+	  Common clock support code for the S3C6400 that is shared
+	  by other CPUs in the series, such as the S3C6410.
+
+# platform specific device setup
+
+config S3C64XX_SETUP_I2C0
+	bool
+	default y
+	help
+	  Common setup code for i2c bus 0.
+
+	  Note, currently since i2c0 is always compiled, this setup helper
+	  is always compiled with it.
+
+config S3C64XX_SETUP_I2C1
+	bool
+	help
+	  Common setup code for i2c bus 1.
+
+config S3C64XX_ADC
+	bool "S3C64XX ADC D/D support"
+	help
+	 Analog to Digital conversion(ADC) D/D for S3C64XX support   
+
+config S3C64XX_DEV_FIMC0
+	bool
+	default n
+	help
+	  Compile in platform device definitions for FIMC controller 0
+
+config S3C64XX_DEV_FIMC1
+	bool
+	default n
+	help
+	  Compile in platform device definitions for FIMC controller 1
+
+config S3C64XX_SETUP_FIMC0
+	bool
+	default n
+	help
+	  Common setup code for FIMC controller 0
+
+config S3C64XX_SETUP_FIMC1
+	bool
+	default n
+	help
+	  Common setup code for FIMC controller 1
+
+# FB part
+config S3C64XX_DEV_FB
+	bool
+	depends on FB_S3C_V2
+	default n
+	help
+	  Compile in platform device definitions for FIMD controller
+
+config S3C64XX_SETUP_FB
+	bool
+	depends on FB_S3C_V2
+	default n
+	help
+	  Common setup code for FIMD controller.
+
+config S3C64XX_DEV_RP
+	bool
+	default n
+	help
+	  Compile in platform device definitions for Renderer pipeline
+
+endif
+
+config PWM
+	tristate "Pulse Width Modulation (PWM) Timer support"
+
+config S3C6410_PWM
+         bool "S3C6410/30 PWM support"
+         depends on CPU_S3C6410 && PWM
+         help
+           S3C6410 PWM support.
+
+config S3C64XX_DOMAIN_GATING
+	bool "Support S3C64XX Domain Gating"
+	depends on PM
+	default n
+	help
+	  domain power enable / disble when each domain is not active / idle
+
+config S3C64XX_DOMAIN_GATING_DEBUG
+	bool "Support S3C64XX Domain Gating Debug"
+	depends on S3C64XX_DOMAIN_GATING
+	default n
+	help
+	  s3c64xx domain gating debug message enable / disable

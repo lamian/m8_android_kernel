@@ -1,0 +1,7 @@
+#
+# Makefile for PostProcessor device driver designed by Samsung Electronics 2007
+#
+
+config VIDEO_PP
+	bool "S3C6410 PP(post process) device support"
+	depends on VIDEO_SAMSUNG

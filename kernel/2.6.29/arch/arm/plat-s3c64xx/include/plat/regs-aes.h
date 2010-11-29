@@ -1,0 +1,69 @@
+/* arch/arm/mach-s3c6410/include/mach/regs-aes.h
+ *
+ * Copyright (C) 2009 Samsung Electronics Co., LTD. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ *	S3C6410 AES register definition
+ */
+
+#ifndef __ASM_ARCH_S3C6410_REGS_AES_H
+#define __ASM_ARCH_S3C6410_REGS_AES_H __FILE__
+
+#define S3C_AES_REG(x)			(x)
+
+/* DMA & Interrupt Control Register */
+#define S3C_AES_DNI_CFG			S3C_AES_REG(0x000000)
+
+/* FIFO Rx Register */
+#define S3C_AES_FRX_CTRL		S3C_AES_REG(0x400000)
+#define S3C_AES_FRX_MLEN		S3C_AES_REG(0x400004)
+#define S3C_AES_FRX_BLKSZ		S3C_AES_REG(0x400008)
+#define S3C_AES_FRX_DSTADDR		S3C_AES_REG(0x40000C)
+#define S3C_AES_FRX_MLENCNT		S3C_AES_REG(0x400010)
+#define S3C_AES_FRX_WRBUF		S3C_AES_REG(0x400040)
+
+/* FIFO Tx Register */
+#define S3C_AES_FTX_CTRL		S3C_AES_REG(0x800000)
+#define S3C_AES_FTX_MLEN		S3C_AES_REG(0x800004)
+#define S3C_AES_FTX_BLKSZ		S3C_AES_REG(0x800008)
+#define S3C_AES_FTX_SRCADDR		S3C_AES_REG(0x80000C)
+#define S3C_AES_FTX_MLENCNT		S3C_AES_REG(0x800010)
+#define S3C_AES_FTX_RDBUF		S3C_AES_REG(0x800040)
+
+/* Rx-AES Register */
+#define S3C_AES_RX_CTRL			S3C_AES_REG(0x100000)
+#define S3C_AES_RX_DIN1			S3C_AES_REG(0x100010)
+#define S3C_AES_RX_DIN2			S3C_AES_REG(0x100014)
+#define S3C_AES_RX_DIN3			S3C_AES_REG(0x100018)
+#define S3C_AES_RX_DIN4			S3C_AES_REG(0x10001C)
+#define S3C_AES_RX_DOUT1		S3C_AES_REG(0x100020)
+#define S3C_AES_RX_DOUT2		S3C_AES_REG(0x100024)
+#define S3C_AES_RX_DOUT3		S3C_AES_REG(0x100028)
+#define S3C_AES_RX_DOUT4		S3C_AES_REG(0x10002C)
+#define S3C_AES_RX_KEY1			S3C_AES_REG(0x100080)
+#define S3C_AES_RX_KEY2			S3C_AES_REG(0x100084)
+#define S3C_AES_RX_KEY3			S3C_AES_REG(0x100088)
+#define S3C_AES_RX_KEY4			S3C_AES_REG(0x10008C)
+#define S3C_AES_RX_KEY5			S3C_AES_REG(0x100090)
+#define S3C_AES_RX_KEY6			S3C_AES_REG(0x100094)
+#define S3C_AES_RX_KEY7			S3C_AES_REG(0x100098)
+#define S3C_AES_RX_KEY8			S3C_AES_REG(0x10009C)
+#define S3C_AES_RX_IV1			S3C_AES_REG(0x1000A0)
+#define S3C_AES_RX_IV2			S3C_AES_REG(0x1000A4)
+#define S3C_AES_RX_IV3			S3C_AES_REG(0x1000A8)
+#define S3C_AES_RX_IV4			S3C_AES_REG(0x1000AC)
+#define S3C_AES_RX_CTR1			S3C_AES_REG(0x1000B0)
+#define S3C_AES_RX_CTR2			S3C_AES_REG(0x1000B4)
+#define S3C_AES_RX_CTR3			S3C_AES_REG(0x1000B8)
+#define S3C_AES_RX_CTR4			S3C_AES_REG(0x1000BC)
+
+/* Tx-AES Register */
+#define S3C_AES_TX_DOUT1		S3C_AES_REG(0x500020)
+#define S3C_AES_TX_DOUT2		S3C_AES_REG(0x500024)
+#define S3C_AES_TX_DOUT3		S3C_AES_REG(0x500028)
+#define S3C_AES_TX_DOUT4		S3C_AES_REG(0x50002C)
+
+#endif /* __ASM_ARCH_S3C6410_REGS_AES_H */
