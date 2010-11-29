@@ -1,0 +1,3 @@
+wlan* driver libertas
+wlan* driver libertas_sdio
+wlan* driver libertas_spi

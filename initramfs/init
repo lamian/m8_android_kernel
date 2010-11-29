@@ -1,0 +1,103 @@
+#!/bin/sh
+
+# This is the first script called by init process
+
+validmd5="c4681275d035fc778bb55b98425a0ef5"
+/bin/mount -a
+
+/bin/mount -t tmpfs mdev /dev
+
+/bin/echo /sbin/mdev > /proc/sys/kernel/hotplug
+/sbin/mdev -s
+
+ifconfig usb0 192.168.1.100 255.255.255.0 up
+
+#Display Logo
+/fbv --delay 10 /images/logo.png
+
+test -d /dev/pts || mkdir /dev/pts
+/bin/mount -t devpts devpts /dev/pts
+
+/debugmsg.sh
+
+devmem 0x7e00f810 32 0xBFFF6D00
+echo ondemand > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+
+mkdir -p /mnt/disk
+mkdir -p /mnt/looproot
+mkdir -p /mnt/patchroot
+
+if [ -e /dev/mmcblk0p5 ]; then
+    mmcblk=/dev/mmcblk0p5
+else
+    mmcblk=/dev/mmcblk0
+fi
+
+mount -t vfat -o fmask=0000,dmask=0000,utf8,errors=continue,sync,dirsync $mmcblk /mnt/disk
+
+if [ -e /mnt/disk/lbe_android/msys.img ]; then
+    curmd5=`md5sum /mnt/disk/lbe_android/msys.img | cut -d ' ' -f1`
+    validmd5=`cat /mnt/disk/lbe_android/version.txt | grep -i "CHECKSUM" | cut -d'=' -f2`
+fi
+
+if [ -e /mnt/disk/lbe_android/mroot.img ] && [ -e /mnt/disk/lbe_android/msys.img ] && [ -e /mnt/disk/lbe_android/mdata.img ] && [ "$validmd5" = "$curmd5" ]; then
+    foundmdroid=1
+    mount -o sync,dirsync /mnt/disk/lbe_android/mroot.img /mnt/looproot
+    if [ $? -ne 0 ]; then
+        umount /mnt/looproot
+        foundmdroid=0
+    fi
+    mount -r -o loop -t squashfs /mnt/disk/lbe_android/msys.img /mnt/looproot/system
+    if [ $? -ne 0 ]; then
+        umount /mnt/looproot/system
+        umount /mnt/looproot
+        foundmdroid=0
+    fi
+    mount -o sync,dirsync /mnt/disk/lbe_android/mdata.img /mnt/looproot/data
+    if [ $? -ne 0 ] || [ ! -f /mnt/looproot/data/A11 ]; then
+        umount /mnt/looproot/data
+        umount /mnt/looproot/system
+        umount /mnt/looproot
+        foundmdroid=0
+    fi
+else
+    foundmdroid=0
+fi
+
+if [ $foundmdroid -ne 1 ]; then
+    /fbv --delay 50 /images/corrupt.png
+    umount /mnt/disk
+    sync
+fi
+
+if [ -e /mnt/disk/lbe_android/mpatch_a13.img ]; then
+    foundmpatch=1
+    mount /mnt/disk/lbe_android/mpatch_a13.img /mnt/patchroot
+else
+    foundmpatch=0
+fi
+
+if [ $foundmpatch -eq 1 ]; then
+    if  [ -e /mnt/patchroot/patch_apply.sh ]; then
+        /mnt/patchroot/patch_apply.sh /mnt/patchroot /mnt/looproot
+    fi
+    umount /mnt/patchroot
+fi
+
+if [ $foundmdroid -eq 1 ]; then
+
+    ver=`grep ro.lbe.version /mnt/looproot/init.rc | tr -s ' ' | cut -d' ' -f4`
+    if [ "$ver" != "A13" ]; then
+        /fbv --delay 50 /images/wrongver.png
+        umount /mnt/looproot/data
+        umount /mnt/looproot
+        umount /mnt/disk
+        sync
+    else
+        /utelnetd -d
+        exec chroot /mnt/looproot /init
+    fi
+fi
+
+/utelnetd -d
+exec /sbin/getty 115200 /dev/s3c_serial2
